@@ -13,6 +13,7 @@ function run() {
         }
         BuildLetterMap();
         console.log(`The total score for part one is: ${runGamePartOne(lines)}`);
+        console.log(`The total score for part two is: ${runGamePartTwo(lines)}`);
 
 
     } catch (err) {
@@ -29,7 +30,16 @@ function runGamePartOne(lines) {
     return totalScore;
 }
 
+function runGamePartTwo(lines) {
+    totalScore = 0;
+    for (let i = 0; i < lines.length; i += 3) {
+        totalScore += calcScore(findCommonItemsGroup(lines.slice(i, i + 3)));
+    }
+    return totalScore;
+}
+
 function calcScore(type) {
+    // Calculates the score for a given letter
     try {
         return LetterMap[type];
     } catch (err) { 
@@ -38,9 +48,33 @@ function calcScore(type) {
 }
 
 function findCommonItem(rucksackleft, rucksackright) {
+    // Locates the first common item in two rucksacks
     rucksackleft = [...rucksackleft].filter(x => rucksackright.has(x));
     return rucksackleft[0];
 }
+
+function stringToSet(str) {
+    // Converts a string to a Set
+    const set = new Set();
+    for (let i = 0; i < str.length; i++) {
+        set.add(str[i]);
+    }
+    return set;
+}
+
+function findCommonItemsGroup(rucksacks) {
+
+        if (!Array.isArray(rucksacks) || rucksacks.length < 3) {
+            console.Error('Not enough rucksacks to find common items');
+            return;
+        } 
+
+        const rucksets = rucksacks.map(stringToSet);
+        let commonItems = rucksets[0];
+        commonItems = [...commonItems].filter(x => rucksets[1].has(x));
+        commonItems = [...commonItems].filter(x => rucksets[2].has(x));
+        return commonItems[0];
+        }
 
 
 function splitRucksack(rucksack) {
