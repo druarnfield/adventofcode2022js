@@ -1,6 +1,5 @@
 function isWhitespace(value) {
-    return value.trim() === '';
-  }
+  return value.trim() === "";
+}
 
-
-  module.exports = { isWhitespace };
+module.exports = { isWhitespace };
